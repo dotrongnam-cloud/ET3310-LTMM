@@ -1,0 +1,486 @@
+=============================================================
+TEST CASE: FIPS Standard Vector
+=============================================================
+
+[1] KEY SCHEDULE
+Key (64-bit) : 133457799BBCDFF1
+PC1 (56-bit) : F0CCAAF556678F
+C0           : F0CCAAF | D0 : 556678F
+-------------------------------------------------------------
+Round  1 | C: E19955F | D: AACCF1E | K 1: 1B02EFFC7072
+Round  2 | C: C332ABF | D: 5599E3D | K 2: 79AED9DBC9E5
+Round  3 | C: 0CCAAFF | D: 56678F5 | K 3: 55FC8A42CF99
+Round  4 | C: 332ABFC | D: 599E3D5 | K 4: 72ADD6DB351D
+Round  5 | C: CCAAFF0 | D: 6678F55 | K 5: 7CEC07EB53A8
+Round  6 | C: 32ABFC3 | D: 99E3D55 | K 6: 63A53E507B2F
+Round  7 | C: CAAFF0C | D: 678F556 | K 7: EC84B7F618BC
+Round  8 | C: 2ABFC33 | D: 9E3D559 | K 8: F78A3AC13BFB
+Round  9 | C: 557F866 | D: 3C7AAB3 | K 9: E0DBEBEDE781
+Round 10 | C: 55FE199 | D: F1EAACC | K10: B1F347BA464F
+Round 11 | C: 57F8665 | D: C7AAB33 | K11: 215FD3DED386
+Round 12 | C: 5FE1995 | D: 1EAACCF | K12: 7571F59467E9
+Round 13 | C: 7F86655 | D: 7AAB33C | K13: 97C5D1FABA41
+Round 14 | C: FE19955 | D: EAACCF1 | K14: 5F43B7F2E73A
+Round 15 | C: F866557 | D: AAB33C7 | K15: BF918D3D3F0A
+Round 16 | C: F0CCAAF | D: 556678F | K16: CB3D8B0E17F5
+
+[2] ENCRYPTION
+Input (64-bit): 0123456789ABCDEF
+IP(Input)     : CC00CCFFF0AAF0AA
+L0            : CC00CCFF | R0 : F0AAF0AA
+-------------------------------------------------------------
+Round  1 (using K 1 = 1B02EFFC7072)
+   E(R)      : 7A15557A1555
+   E(R) ^ K  : 6117BA866527
+   S-box out : 5C82B597
+   P(S-box)  : 234AA9BB
+   L 1       : F0AAF0AA | R 1 : EF4A6544
+Round  2 (using K 2 = 79AED9DBC9E5)
+   E(R)      : 75EA5430AA09
+   E(R) ^ K  : 0C448DEB63EC
+   S-box out : F8D03AAE
+   P(S-box)  : 3CAB87A3
+   L 2       : EF4A6544 | R 2 : CC017709
+Round  3 (using K 3 = 55FC8A42CF99)
+   E(R)      : E58002BAE853
+   E(R) ^ K  : B07C88F827CA
+   S-box out : 2710E16F
+   P(S-box)  : 4D166EB0
+   L 3       : CC017709 | R 3 : A25C0BF4
+Round  4 (using K 4 = 72ADD6DB351D)
+   E(R)      : 5042F8057FA9
+   E(R) ^ K  : 22EF2EDE4AB4
+   S-box out : 21ED9F3A
+   P(S-box)  : BB23774C
+   L 4       : A25C0BF4 | R 4 : 77220045
+Round  5 (using K 5 = 7CEC07EB53A8)
+   E(R)      : BAE90400020A
+   E(R) ^ K  : C60503EB51A2
+   S-box out : 50C831EB
+   P(S-box)  : 2813ADC3
+   L 5       : 77220045 | R 5 : 8A4FA637
+Round  6 (using K 6 = 63A53E507B2F)
+   E(R)      : C5425FD0C1AF
+   E(R) ^ K  : A6E76180BA80
+   S-box out : 41F34C3D
+   P(S-box)  : 9E45CD2C
+   L 6       : 8A4FA637 | R 6 : E967CD69
+Round  7 (using K 7 = EC84B7F618BC)
+   E(R)      : F52B0FE5AB53
+   E(R) ^ K  : 19AFB813B3EF
+   S-box out : 107540AD
+   P(S-box)  : 8C051C27
+   L 7       : E967CD69 | R 7 : 064ABA10
+Round  8 (using K 8 = F78A3AC13BFB)
+   E(R)      : 00C2555F40A0
+   E(R) ^ K  : F7486F9E7B5B
+   S-box out : 6C187CAE
+   P(S-box)  : 3C0E86F9
+   L 8       : 064ABA10 | R 8 : D5694B90
+Round  9 (using K 9 = E0DBEBEDE781)
+   E(R)      : 6AAB52A57CA1
+   E(R) ^ K  : 8A70B9489B20
+   S-box out : 110C5777
+   P(S-box)  : 22367C6A
+   L 9       : D5694B90 | R 9 : 247CC67A
+Round 10 (using K10 = B1F347BA464F)
+   E(R)      : 1083F960C3F4
+   E(R) ^ K  : A170BEDA85BB
+   S-box out : DA045275
+   P(S-box)  : 62BC9C22
+   L10       : 247CC67A | R10 : B7D5D7B2
+Round 11 (using K11 = 215FD3DED386)
+   E(R)      : 5AFEABEAFDA5
+   E(R) ^ K  : 7BA178342E23
+   S-box out : 7305D101
+   P(S-box)  : E104FA02
+   L11       : B7D5D7B2 | R11 : C5783C78
+Round 12 (using K12 = 7571F59467E9)
+   E(R)      : 60ABF01F83F1
+   E(R) ^ K  : 15DA058BE418
+   S-box out : 7B8B2635
+   P(S-box)  : C268CFEA
+   L12       : C5783C78 | R12 : 75BD1858
+Round 13 (using K13 = 97C5D1FABA41)
+   E(R)      : 3ABDFA8F02F0
+   E(R) ^ K  : AD782B75B8B1
+   S-box out : 9AD18B4F
+   P(S-box)  : DDBB2922
+   L13       : 75BD1858 | R13 : 18C3155A
+Round 14 (using K14 = 5F43B7F2E73A)
+   E(R)      : 0F16068AAAF4
+   E(R) ^ K  : 5055B1784DCE
+   S-box out : 64799AF1
+   P(S-box)  : B7318E55
+   L14       : 18C3155A | R14 : C28C960D
+Round 15 (using K15 = BF918D3D3F0A)
+   E(R)      : E054594AC05B
+   E(R) ^ K  : 5FC5D477FF51
+   S-box out : B2E88D3C
+   P(S-box)  : 5B81276E
+   L15       : C28C960D | R15 : 43423234
+Round 16 (using K16 = CB3D8B0E17F5)
+   E(R)      : 206A041A41A8
+   E(R) ^ K  : EB578F14565D
+   S-box out : A7832429
+   P(S-box)  : C8C04F98
+   L16       : 43423234 | R16 : 0A4CD995
+-------------------------------------------------------------
+32-bit Swap (R16||L16): 0A4CD99543423234
+Output (IP^-1)        : 85E813540F0AB405
+
+[3] DECRYPTION VERIFICATION
+Input (64-bit): 85E813540F0AB405
+IP(Input)     : 0A4CD99543423234
+L0            : 0A4CD995 | R0 : 43423234
+-------------------------------------------------------------
+Round  1 (using K16 = CB3D8B0E17F5)
+   E(R)      : 206A041A41A8
+   E(R) ^ K  : EB578F14565D
+   S-box out : A7832429
+   P(S-box)  : C8C04F98
+   L 1       : 43423234 | R 1 : C28C960D
+Round  2 (using K15 = BF918D3D3F0A)
+   E(R)      : E054594AC05B
+   E(R) ^ K  : 5FC5D477FF51
+   S-box out : B2E88D3C
+   P(S-box)  : 5B81276E
+   L 2       : C28C960D | R 2 : 18C3155A
+Round  3 (using K14 = 5F43B7F2E73A)
+   E(R)      : 0F16068AAAF4
+   E(R) ^ K  : 5055B1784DCE
+   S-box out : 64799AF1
+   P(S-box)  : B7318E55
+   L 3       : 18C3155A | R 3 : 75BD1858
+Round  4 (using K13 = 97C5D1FABA41)
+   E(R)      : 3ABDFA8F02F0
+   E(R) ^ K  : AD782B75B8B1
+   S-box out : 9AD18B4F
+   P(S-box)  : DDBB2922
+   L 4       : 75BD1858 | R 4 : C5783C78
+Round  5 (using K12 = 7571F59467E9)
+   E(R)      : 60ABF01F83F1
+   E(R) ^ K  : 15DA058BE418
+   S-box out : 7B8B2635
+   P(S-box)  : C268CFEA
+   L 5       : C5783C78 | R 5 : B7D5D7B2
+Round  6 (using K11 = 215FD3DED386)
+   E(R)      : 5AFEABEAFDA5
+   E(R) ^ K  : 7BA178342E23
+   S-box out : 7305D101
+   P(S-box)  : E104FA02
+   L 6       : B7D5D7B2 | R 6 : 247CC67A
+Round  7 (using K10 = B1F347BA464F)
+   E(R)      : 1083F960C3F4
+   E(R) ^ K  : A170BEDA85BB
+   S-box out : DA045275
+   P(S-box)  : 62BC9C22
+   L 7       : 247CC67A | R 7 : D5694B90
+Round  8 (using K 9 = E0DBEBEDE781)
+   E(R)      : 6AAB52A57CA1
+   E(R) ^ K  : 8A70B9489B20
+   S-box out : 110C5777
+   P(S-box)  : 22367C6A
+   L 8       : D5694B90 | R 8 : 064ABA10
+Round  9 (using K 8 = F78A3AC13BFB)
+   E(R)      : 00C2555F40A0
+   E(R) ^ K  : F7486F9E7B5B
+   S-box out : 6C187CAE
+   P(S-box)  : 3C0E86F9
+   L 9       : 064ABA10 | R 9 : E967CD69
+Round 10 (using K 7 = EC84B7F618BC)
+   E(R)      : F52B0FE5AB53
+   E(R) ^ K  : 19AFB813B3EF
+   S-box out : 107540AD
+   P(S-box)  : 8C051C27
+   L10       : E967CD69 | R10 : 8A4FA637
+Round 11 (using K 6 = 63A53E507B2F)
+   E(R)      : C5425FD0C1AF
+   E(R) ^ K  : A6E76180BA80
+   S-box out : 41F34C3D
+   P(S-box)  : 9E45CD2C
+   L11       : 8A4FA637 | R11 : 77220045
+Round 12 (using K 5 = 7CEC07EB53A8)
+   E(R)      : BAE90400020A
+   E(R) ^ K  : C60503EB51A2
+   S-box out : 50C831EB
+   P(S-box)  : 2813ADC3
+   L12       : 77220045 | R12 : A25C0BF4
+Round 13 (using K 4 = 72ADD6DB351D)
+   E(R)      : 5042F8057FA9
+   E(R) ^ K  : 22EF2EDE4AB4
+   S-box out : 21ED9F3A
+   P(S-box)  : BB23774C
+   L13       : A25C0BF4 | R13 : CC017709
+Round 14 (using K 3 = 55FC8A42CF99)
+   E(R)      : E58002BAE853
+   E(R) ^ K  : B07C88F827CA
+   S-box out : 2710E16F
+   P(S-box)  : 4D166EB0
+   L14       : CC017709 | R14 : EF4A6544
+Round 15 (using K 2 = 79AED9DBC9E5)
+   E(R)      : 75EA5430AA09
+   E(R) ^ K  : 0C448DEB63EC
+   S-box out : F8D03AAE
+   P(S-box)  : 3CAB87A3
+   L15       : EF4A6544 | R15 : F0AAF0AA
+Round 16 (using K 1 = 1B02EFFC7072)
+   E(R)      : 7A15557A1555
+   E(R) ^ K  : 6117BA866527
+   S-box out : 5C82B597
+   P(S-box)  : 234AA9BB
+   L16       : F0AAF0AA | R16 : CC00CCFF
+-------------------------------------------------------------
+32-bit Swap (R16||L16): CC00CCFFF0AAF0AA
+Output (IP^-1)        : 0123456789ABCDEF
+
+[SUMMARY]
+Plaintext  : 0123456789ABCDEF
+Key        : 133457799BBCDFF1
+Ciphertext : 85E813540F0AB405
+Decrypted  : 0123456789ABCDEF
+Check      : PASS (Khớp Plaintext)
+
+=============================================================
+TEST CASE: Stallings Textbook Vector
+=============================================================
+
+[1] KEY SCHEDULE
+Key (64-bit) : 0F1571C947D9E859
+PC1 (56-bit) : 68FC44A1113E96
+C0           : 68FC44A | D0 : 1113E96
+-------------------------------------------------------------
+Round  1 | C: D1F8894 | D: 2227D2C | K 1: 7833C320DA70
+Round  2 | C: A3F1129 | D: 444FA58 | K 2: 2B1A74CA48D8
+Round  3 | C: 8FC44A6 | D: 113E961 | K 3: 8C78D881D31D
+Round  4 | C: 3F1129A | D: 44FA584 | K 4: 1667789316A0
+Round  5 | C: FC44A68 | D: 13E9611 | K 5: CE5D01D80B25
+Round  6 | C: F1129A3 | D: 4FA5844 | K 6: 4BAB4D126A9C
+Round  7 | C: C44A68F | D: 3E96111 | K 7: 09F48B713191
+Round  8 | C: 1129A3F | D: FA58444 | K 8: 710DEAA3202B
+Round  9 | C: 225347E | D: F4B0889 | K 9: 129AB83347C3
+Round 10 | C: 894D1F8 | D: D2C2227 | K10: 9C38661E8103
+Round 11 | C: 25347E2 | D: 4B0889F | K11: A26E4CC66544
+Round 12 | C: 94D1F88 | D: 2C2227D | K12: 48772468A3C8
+Round 13 | C: 5347E22 | D: B0889F4 | K13: C09D79F0D40B
+Round 14 | C: 4D1F889 | D: C2227D2 | K14: C5E2634E162A
+Round 15 | C: 347E225 | D: 0889F4B | K15: A3DF829C7968
+Round 16 | C: 68FC44A | D: 1113E96 | K16: A6120B4D4C25
+
+[2] ENCRYPTION
+Input (64-bit): 02468ACEECA86420
+IP(Input)     : 5A005A003CF03C0F
+L0            : 5A005A00 | R0 : 3CF03C0F
+-------------------------------------------------------------
+Round  1 (using K 1 = 7833C320DA70)
+   E(R)      : 9F97A01F805E
+   E(R) ^ K  : E7A4633F5A2E
+   S-box out : A32F11C2
+   P(S-box)  : E0D27245
+   L 1       : 3CF03C0F | R 1 : BAD22845
+Round  2 (using K 2 = 2B1A74CA48D8)
+   E(R)      : DF56A415020B
+   E(R) ^ K  : F44CD0DF4AD3
+   S-box out : 68F19445
+   P(S-box)  : A5198B2C
+   L 2       : BAD22845 | R 2 : 99E9B723
+Round  3 (using K 3 = 8C78D881D31D)
+   E(R)      : CF3F53DAE907
+   E(R) ^ K  : 43478B5B3A1A
+   S-box out : 3C8FFEC0
+   P(S-box)  : B17C13DB
+   L 3       : 99E9B723 | R 3 : 0BAE3B9E
+Round  4 (using K 4 = 1667789316A0)
+   E(R)      : 057D5C1F7CFC
+   E(R) ^ K  : 131A248C6A5C
+   S-box out : DB898F1C
+   P(S-box)  : DBA8E16A
+   L 4       : 0BAE3B9E | R 4 : 42415649
+Round  5 (using K 5 = CE5D01D80B25)
+   E(R)      : A04202AAC252
+   E(R) ^ K  : 6E1F0372C977
+   S-box out : 5DE8ECD0
+   P(S-box)  : 131DC1DF
+   L 5       : 42415649 | R 5 : 18B3FA41
+Round  6 (using K 6 = 4BAB4D126A9C)
+   E(R)      : 8F15A7FF4202
+   E(R) ^ K  : C4BEEAED289E
+   S-box out : 525B4D47
+   P(S-box)  : D457A86A
+   L 6       : 18B3FA41 | R 6 : 9616FE23
+Round  7 (using K 7 = 09F48B713191)
+   E(R)      : CAC0AD7FC107
+   E(R) ^ K  : C334260EF096
+   S-box out : F610BABE
+   P(S-box)  : 7FA286B3
+   L 7       : 9616FE23 | R 7 : 67117CF2
+Round  8 (using K 8 = 710DEAA3202B)
+   E(R)      : 30E8A2BF97A4
+   E(R) ^ K  : 41E5481CB78F
+   S-box out : 3A50CC14
+   P(S-box)  : 570D022A
+   L 8       : 67117CF2 | R 8 : C11BFC09
+Round  9 (using K 9 = 129AB83347C3)
+   E(R)      : E028F7FF8053
+   E(R) ^ K  : F2B24FCCC790
+   S-box out : 5F33F61A
+   P(S-box)  : EF6EC09E
+   L 9       : C11BFC09 | R 9 : 887FBC6C
+Round 10 (using K10 = 9C38661E8103)
+   E(R)      : 4503FFDF8359
+   E(R) ^ K  : D93B99C1025A
+   S-box out : 7001F040
+   P(S-box)  : A1148282
+   L10       : 887FBC6C | R10 : 600F7E8B
+Round 11 (using K11 = A26E4CC66544)
+   E(R)      : B0005EBFD456
+   E(R) ^ K  : 126E1279B112
+   S-box out : DB529B29
+   P(S-box)  : 7DE9EC02
+   L11       : 600F7E8B | R11 : F596506E
+Round 12 (using K12 = 48772468A3C8)
+   E(R)      : 7ABCAC2A035D
+   E(R) ^ K  : 32CB8842A095
+   S-box out : BD0088B6
+   P(S-box)  : 138A4633
+   L12       : F596506E | R12 : 738538B8
+Round 13 (using K13 = C09D79F0D40B)
+   E(R)      : 3A7C0A9F15F0
+   E(R) ^ K  : FAE1736FC1FB
+   S-box out : 01049B75
+   P(S-box)  : 33307C20
+   L13       : 738538B8 | R13 : C6A62C4E
+Round 14 (using K14 = C5E2634E162A)
+   E(R)      : 60D50C15825D
+   E(R) ^ K  : A5376F5B9477
+   S-box out : 40F8F6E0
+   P(S-box)  : 253585CD
+   L14       : C6A62C4E | R14 : 56B0BD75
+Round 15 (using K15 = A3DF829C7968)
+   E(R)      : AAD5A15FABAA
+   E(R) ^ K  : 090A23C3D2C2
+   S-box out : 498FF892
+   P(S-box)  : B34ED1C1
+   L15       : 56B0BD75 | R15 : 75E8FD8F
+Round 16 (using K16 = A6120B4D4C25)
+   E(R)      : BABF517FBC5E
+   E(R) ^ K  : 1CAD5A32F07B
+   S-box out : 4BECBAD5
+   P(S-box)  : 7339D9E5
+   L16       : 75E8FD8F | R16 : 25896490
+-------------------------------------------------------------
+32-bit Swap (R16||L16): 2589649075E8FD8F
+Output (IP^-1)        : DA02CE3A89ECAC3B
+
+[3] DECRYPTION VERIFICATION
+Input (64-bit): DA02CE3A89ECAC3B
+IP(Input)     : 2589649075E8FD8F
+L0            : 25896490 | R0 : 75E8FD8F
+-------------------------------------------------------------
+Round  1 (using K16 = A6120B4D4C25)
+   E(R)      : BABF517FBC5E
+   E(R) ^ K  : 1CAD5A32F07B
+   S-box out : 4BECBAD5
+   P(S-box)  : 7339D9E5
+   L 1       : 75E8FD8F | R 1 : 56B0BD75
+Round  2 (using K15 = A3DF829C7968)
+   E(R)      : AAD5A15FABAA
+   E(R) ^ K  : 090A23C3D2C2
+   S-box out : 498FF892
+   P(S-box)  : B34ED1C1
+   L 2       : 56B0BD75 | R 2 : C6A62C4E
+Round  3 (using K14 = C5E2634E162A)
+   E(R)      : 60D50C15825D
+   E(R) ^ K  : A5376F5B9477
+   S-box out : 40F8F6E0
+   P(S-box)  : 253585CD
+   L 3       : C6A62C4E | R 3 : 738538B8
+Round  4 (using K13 = C09D79F0D40B)
+   E(R)      : 3A7C0A9F15F0
+   E(R) ^ K  : FAE1736FC1FB
+   S-box out : 01049B75
+   P(S-box)  : 33307C20
+   L 4       : 738538B8 | R 4 : F596506E
+Round  5 (using K12 = 48772468A3C8)
+   E(R)      : 7ABCAC2A035D
+   E(R) ^ K  : 32CB8842A095
+   S-box out : BD0088B6
+   P(S-box)  : 138A4633
+   L 5       : F596506E | R 5 : 600F7E8B
+Round  6 (using K11 = A26E4CC66544)
+   E(R)      : B0005EBFD456
+   E(R) ^ K  : 126E1279B112
+   S-box out : DB529B29
+   P(S-box)  : 7DE9EC02
+   L 6       : 600F7E8B | R 6 : 887FBC6C
+Round  7 (using K10 = 9C38661E8103)
+   E(R)      : 4503FFDF8359
+   E(R) ^ K  : D93B99C1025A
+   S-box out : 7001F040
+   P(S-box)  : A1148282
+   L 7       : 887FBC6C | R 7 : C11BFC09
+Round  8 (using K 9 = 129AB83347C3)
+   E(R)      : E028F7FF8053
+   E(R) ^ K  : F2B24FCCC790
+   S-box out : 5F33F61A
+   P(S-box)  : EF6EC09E
+   L 8       : C11BFC09 | R 8 : 67117CF2
+Round  9 (using K 8 = 710DEAA3202B)
+   E(R)      : 30E8A2BF97A4
+   E(R) ^ K  : 41E5481CB78F
+   S-box out : 3A50CC14
+   P(S-box)  : 570D022A
+   L 9       : 67117CF2 | R 9 : 9616FE23
+Round 10 (using K 7 = 09F48B713191)
+   E(R)      : CAC0AD7FC107
+   E(R) ^ K  : C334260EF096
+   S-box out : F610BABE
+   P(S-box)  : 7FA286B3
+   L10       : 9616FE23 | R10 : 18B3FA41
+Round 11 (using K 6 = 4BAB4D126A9C)
+   E(R)      : 8F15A7FF4202
+   E(R) ^ K  : C4BEEAED289E
+   S-box out : 525B4D47
+   P(S-box)  : D457A86A
+   L11       : 18B3FA41 | R11 : 42415649
+Round 12 (using K 5 = CE5D01D80B25)
+   E(R)      : A04202AAC252
+   E(R) ^ K  : 6E1F0372C977
+   S-box out : 5DE8ECD0
+   P(S-box)  : 131DC1DF
+   L12       : 42415649 | R12 : 0BAE3B9E
+Round 13 (using K 4 = 1667789316A0)
+   E(R)      : 057D5C1F7CFC
+   E(R) ^ K  : 131A248C6A5C
+   S-box out : DB898F1C
+   P(S-box)  : DBA8E16A
+   L13       : 0BAE3B9E | R13 : 99E9B723
+Round 14 (using K 3 = 8C78D881D31D)
+   E(R)      : CF3F53DAE907
+   E(R) ^ K  : 43478B5B3A1A
+   S-box out : 3C8FFEC0
+   P(S-box)  : B17C13DB
+   L14       : 99E9B723 | R14 : BAD22845
+Round 15 (using K 2 = 2B1A74CA48D8)
+   E(R)      : DF56A415020B
+   E(R) ^ K  : F44CD0DF4AD3
+   S-box out : 68F19445
+   P(S-box)  : A5198B2C
+   L15       : BAD22845 | R15 : 3CF03C0F
+Round 16 (using K 1 = 7833C320DA70)
+   E(R)      : 9F97A01F805E
+   E(R) ^ K  : E7A4633F5A2E
+   S-box out : A32F11C2
+   P(S-box)  : E0D27245
+   L16       : 3CF03C0F | R16 : 5A005A00
+-------------------------------------------------------------
+32-bit Swap (R16||L16): 5A005A003CF03C0F
+Output (IP^-1)        : 02468ACEECA86420
+
+[SUMMARY]
+Plaintext  : 02468ACEECA86420
+Key        : 0F1571C947D9E859
+Ciphertext : DA02CE3A89ECAC3B
+Decrypted  : 02468ACEECA86420
+Check      : PASS (Khớp Plaintext)
+

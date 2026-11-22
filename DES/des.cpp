@@ -63,5 +63,93 @@ std::array<uint64_t, 16> generateSubkeys(uint64_t key, std::ostream* log) {
 
     return subkeys;
 }
+uint32_t feistelF(uint32_t R, uint64_t subkey, std::ostream* log) {
+    // 1. Mở rộng R từ 32-bit lên 48-bit qua bảng E
+    uint64_t expanded = permute(R, E, 32, 48);
+
+    // 2. XOR với khóa vòng 48-bit
+    uint64_t xored = expanded ^ subkey;
+
+    // 3. Thay thế qua 8 hộp S-box (mỗi cụm 6-bit -> 4-bit)
+    uint32_t sbox_out = 0;
+    for (int box = 0; box < 8; ++box) {
+        uint8_t six_bits = static_cast<uint8_t>((xored >> (42 - 6 * box)) & 0x3FULL);
+        int row = ((six_bits & 0x20) >> 4) | (six_bits & 0x01);
+        int col = (six_bits >> 1) & 0x0F;
+        sbox_out = (sbox_out << 4) | SBOX[box][row][col];
+    }
+
+    // 4. Hoán vị 32-bit qua bảng P
+    uint32_t p_out = static_cast<uint32_t>(permute(sbox_out, P, 32, 32));
+
+    if (log != nullptr) {
+        *log << "   E(R)      : "; printHex(*log, expanded, 12); *log << "\n";
+        *log << "   E(R) ^ K  : "; printHex(*log, xored, 12);    *log << "\n";
+        *log << "   S-box out : "; printHex(*log, sbox_out, 8);  *log << "\n";
+        *log << "   P(S-box)  : "; printHex(*log, p_out, 8);     *log << "\n";
+    }
+
+    return p_out;
+}
+
+uint64_t processBlock(uint64_t block,
+                      const std::array<uint64_t, 16>& subkeys,
+                      bool decrypt,
+                      std::ostream* log) {
+    // 1. Hoán vị khởi đầu IP
+    uint64_t ip = permute(block, IP, 64, 64);
+
+    // 2. Tách thành 2 nửa 32-bit L0 và R0
+    uint32_t L = static_cast<uint32_t>(ip >> 32);
+    uint32_t R = static_cast<uint32_t>(ip & 0xFFFFFFFFULL);
+
+    if (log != nullptr) {
+        *log << "Input (64-bit): "; printHex(*log, block, 16); *log << "\n";
+        *log << "IP(Input)     : "; printHex(*log, ip, 16);    *log << "\n";
+        *log << "L0            : "; printHex(*log, L, 8);
+        *log << " | R0 : ";         printHex(*log, R, 8);      *log << "\n";
+        *log << "-------------------------------------------------------------\n";
+    }
+
+    // 3. Lặp 16 vòng Feistel (giải mã dùng khóa vòng ngược từ K16 về K1)
+    for (int r = 0; r < 16; ++r) {
+        int key_idx = decrypt ? (15 - r) : r;
+        uint64_t round_key = subkeys[key_idx];
+
+        if (log != nullptr) {
+            *log << "Round " << std::setw(2) << (r + 1)
+                 << " (using K" << std::setw(2) << (key_idx + 1) << " = ";
+            printHex(*log, round_key, 12);
+            *log << ")\n";
+        }
+
+        uint32_t prev_L = L;
+        uint32_t f_val  = feistelF(R, round_key, log);
+        L = R;
+        R = prev_L ^ f_val;
+
+        if (log != nullptr) {
+            *log << "   L" << std::setw(2) << (r + 1) << "       : "; printHex(*log, L, 8);
+            *log << " | R" << std::setw(2) << (r + 1) << " : ";      printHex(*log, R, 8);
+            *log << "\n";
+        }
+    }
+
+    // 4. 32-bit Swap (ghép R16 đứng trước L16) rồi qua IP_INV
+    uint64_t pre_output = (static_cast<uint64_t>(R) << 32) | L;
+    uint64_t output = permute(pre_output, IP_INV, 64, 64);
+
+    if (log != nullptr) {
+        *log << "-------------------------------------------------------------\n";
+        *log << "32-bit Swap (R16||L16): "; printHex(*log, pre_output, 16); *log << "\n";
+        *log << "Output (IP^-1)        : "; printHex(*log, output, 16);     *log << "\n";
+    }
+
+    return output;
+}
+
+// =============================================================================
+
+
 
 } // namespace des

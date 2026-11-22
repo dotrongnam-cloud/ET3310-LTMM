@@ -9,4 +9,10 @@ namespace des {
 
     uint32_t leftRotate28(uint32_t value, int shift);
     std::array<uint64_t, 16> generateSubkeys(uint64_t key, std::ostream* log = nullptr);
+
+    uint32_t feistelF(uint32_t R, uint64_t subkey, std::ostream* log = nullptr);
+    uint64_t processBlock(uint64_t block,
+                          const std::array<uint64_t, 16>& subkeys,
+                          bool decrypt,
+                          std::ostream* log = nullptr);
 }
