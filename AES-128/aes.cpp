@@ -88,4 +88,221 @@ RoundKeys keyExpansion(const Block& key, std::ostream* log) {
     return round_keys;
 }
 
+State bytesToState(const Block& input) {
+    State state{};
+    // Nạp 16 byte đầu vào ma trận 4x4 theo thứ tự từng cột (column-major)
+    for (int col = 0; col < 4; ++col) {
+        for (int row = 0; row < 4; ++row) {
+            state[row][col] = input[4 * col + row];
+        }
+    }
+    return state;
+}
+
+Block stateToBytes(const State& state) {
+    Block output{};
+    for (int col = 0; col < 4; ++col) {
+        for (int row = 0; row < 4; ++row) {
+            output[4 * col + row] = state[row][col];
+        }
+    }
+    return output;
+}
+
+void addRoundKey(State& state, const Block& round_key) {
+    for (int col = 0; col < 4; ++col) {
+        for (int row = 0; row < 4; ++row) {
+            state[row][col] ^= round_key[4 * col + row];
+        }
+    }
+}
+
+void subBytes(State& state) {
+    for (int r = 0; r < 4; ++r) {
+        for (int c = 0; c < 4; ++c) {
+            state[r][c] = SBOX[state[r][c]];
+        }
+    }
+}
+
+void invSubBytes(State& state) {
+    for (int r = 0; r < 4; ++r) {
+        for (int c = 0; c < 4; ++c) {
+            state[r][c] = INV_SBOX[state[r][c]];
+        }
+    }
+}
+
+void shiftRows(State& state) {
+    // Hàng 0: giữ nguyên
+    // Hàng 1: dịch vòng trái 1 byte
+    uint8_t t = state[1][0];
+    state[1][0] = state[1][1];
+    state[1][1] = state[1][2];
+    state[1][2] = state[1][3];
+    state[1][3] = t;
+
+    // Hàng 2: dịch vòng trái 2 byte
+    std::swap(state[2][0], state[2][2]);
+    std::swap(state[2][1], state[2][3]);
+
+    // Hàng 3: dịch vòng trái 3 byte (tương đương dịch phải 1 byte)
+    t = state[3][3];
+    state[3][3] = state[3][2];
+    state[3][2] = state[3][1];
+    state[3][1] = state[3][0];
+    state[3][0] = t;
+}
+
+void invShiftRows(State& state) {
+    // Hàng 1: dịch vòng phải 1 byte
+    uint8_t t = state[1][3];
+    state[1][3] = state[1][2];
+    state[1][2] = state[1][1];
+    state[1][1] = state[1][0];
+    state[1][0] = t;
+
+    // Hàng 2: dịch vòng phải 2 byte
+    std::swap(state[2][0], state[2][2]);
+    std::swap(state[2][1], state[2][3]);
+
+    // Hàng 3: dịch vòng phải 3 byte (tương đương dịch trái 1 byte)
+    t = state[3][0];
+    state[3][0] = state[3][1];
+    state[3][1] = state[3][2];
+    state[3][2] = state[3][3];
+    state[3][3] = t;
+}
+
+void mixColumns(State& state) {
+    for (int c = 0; c < 4; ++c) {
+        uint8_t s0 = state[0][c];
+        uint8_t s1 = state[1][c];
+        uint8_t s2 = state[2][c];
+        uint8_t s3 = state[3][c];
+
+        state[0][c] = gfMul(0x02, s0) ^ gfMul(0x03, s1) ^ s2 ^ s3;
+        state[1][c] = s0 ^ gfMul(0x02, s1) ^ gfMul(0x03, s2) ^ s3;
+        state[2][c] = s0 ^ s1 ^ gfMul(0x02, s2) ^ gfMul(0x03, s3);
+        state[3][c] = gfMul(0x03, s0) ^ s1 ^ s2 ^ gfMul(0x02, s3);
+    }
+}
+
+void invMixColumns(State& state) {
+    for (int c = 0; c < 4; ++c) {
+        uint8_t s0 = state[0][c];
+        uint8_t s1 = state[1][c];
+        uint8_t s2 = state[2][c];
+        uint8_t s3 = state[3][c];
+
+        state[0][c] = gfMul(0x0E, s0) ^ gfMul(0x0B, s1) ^ gfMul(0x0D, s2) ^ gfMul(0x09, s3);
+        state[1][c] = gfMul(0x09, s0) ^ gfMul(0x0E, s1) ^ gfMul(0x0B, s2) ^ gfMul(0x0D, s3);
+        state[2][c] = gfMul(0x0D, s0) ^ gfMul(0x09, s1) ^ gfMul(0x0E, s2) ^ gfMul(0x0B, s3);
+        state[3][c] = gfMul(0x0B, s0) ^ gfMul(0x0D, s1) ^ gfMul(0x09, s2) ^ gfMul(0x0E, s3);
+    }
+}
+
+Block encryptBlock(const Block& plaintext, const RoundKeys& round_keys, std::ostream* log) {
+    State state = bytesToState(plaintext);
+
+    if (log != nullptr) {
+        *log << "Round 0 (Initial AddRoundKey)\n";
+        printStateMatrix(*log, "Input State", state);
+    }
+
+    addRoundKey(state, round_keys[0]);
+
+    if (log != nullptr) {
+        printStateMatrix(*log, "After AddRoundKey (K0)", state);
+    }
+
+    // Vòng 1 đến vòng 9: đầy đủ 4 bước
+    for (int r = 1; r <= 9; ++r) {
+        if (log != nullptr) {
+            *log << "-------------------------------------------------------------\n";
+            *log << "Round " << r << "\n";
+        }
+
+        subBytes(state);
+        if (log != nullptr) printStateMatrix(*log, "After SubBytes", state);
+
+        shiftRows(state);
+        if (log != nullptr) printStateMatrix(*log, "After ShiftRows", state);
+
+        mixColumns(state);
+        if (log != nullptr) printStateMatrix(*log, "After MixColumns", state);
+
+        addRoundKey(state, round_keys[r]);
+        if (log != nullptr) printStateMatrix(*log, "After AddRoundKey (K" + std::to_string(r) + ")", state);
+    }
+
+    // Vòng 10 (vòng cuối): bỏ MixColumns
+    if (log != nullptr) {
+        *log << "-------------------------------------------------------------\n";
+        *log << "Round 10 (Final Round - No MixColumns)\n";
+    }
+
+    subBytes(state);
+    if (log != nullptr) printStateMatrix(*log, "After SubBytes", state);
+
+    shiftRows(state);
+    if (log != nullptr) printStateMatrix(*log, "After ShiftRows", state);
+
+    addRoundKey(state, round_keys[10]);
+    if (log != nullptr) printStateMatrix(*log, "After AddRoundKey (K10)", state);
+
+    return stateToBytes(state);
+}
+
+Block decryptBlock(const Block& ciphertext, const RoundKeys& round_keys, std::ostream* log) {
+    State state = bytesToState(ciphertext);
+
+    if (log != nullptr) {
+        *log << "Initial AddRoundKey (K10)\n";
+        printStateMatrix(*log, "Ciphertext State", state);
+    }
+
+    addRoundKey(state, round_keys[10]);
+
+    if (log != nullptr) {
+        printStateMatrix(*log, "After AddRoundKey (K10)", state);
+    }
+
+    // Giải mã vòng ngược từ khóa K9 về K1
+    for (int r = 9; r >= 1; --r) {
+        if (log != nullptr) {
+            *log << "-------------------------------------------------------------\n";
+            *log << "Decryption Round " << (10 - r) << " (using K" << r << ")\n";
+        }
+
+        invShiftRows(state);
+        if (log != nullptr) printStateMatrix(*log, "After InvShiftRows", state);
+
+        invSubBytes(state);
+        if (log != nullptr) printStateMatrix(*log, "After InvSubBytes", state);
+
+        addRoundKey(state, round_keys[r]);
+        if (log != nullptr) printStateMatrix(*log, "After AddRoundKey (K" + std::to_string(r) + ")", state);
+
+        invMixColumns(state);
+        if (log != nullptr) printStateMatrix(*log, "After InvMixColumns", state);
+    }
+
+    // Vòng cuối giải mã (dùng K0, không có InvMixColumns)
+    if (log != nullptr) {
+        *log << "-------------------------------------------------------------\n";
+        *log << "Decryption Round 10 (Final Round - using K0)\n";
+    }
+
+    invShiftRows(state);
+    if (log != nullptr) printStateMatrix(*log, "After InvShiftRows", state);
+
+    invSubBytes(state);
+    if (log != nullptr) printStateMatrix(*log, "After InvSubBytes", state);
+
+    addRoundKey(state, round_keys[0]);
+    if (log != nullptr) printStateMatrix(*log, "After AddRoundKey (K0)", state);
+
+    return stateToBytes(state);
+}
 } // namespace aes
